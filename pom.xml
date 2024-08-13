@@ -38,11 +38,9 @@
             <applicationName>projectcicd</applicationName> 
 			<businessGroup>ITMMA</businessGroup>
             <environment>Sandbox</environment> 
-            <workerType>0.1 vCores</workerType> 
+           
          	<workers>1</workers> 
-			<properties>
-				<env>dev</env>
-			</properties>
+			
             <objectStoreV2>true</objectStoreV2> 
         </cloudHubDeployment> 
     </configuration> 
