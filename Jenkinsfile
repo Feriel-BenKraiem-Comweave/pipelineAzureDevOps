@@ -15,7 +15,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                     ${tool 'maven'}/bin/mvn clean package
+                     mvn clean package
 
                 }
             }
