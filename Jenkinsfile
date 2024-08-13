@@ -16,7 +16,7 @@ pipeline {
         }
         stage('Deploy To CloudHub') {
             steps {
-                sh 'mvn clean package deploy -DmuleDeploy -DskipTests -DaltDeploymentRepository=myinternalrepo::default::file:///C:/snapshots'
+                sh 'mvn clean package deploy -DmuleDeploy -DskipTests'
             }
         }
     }
