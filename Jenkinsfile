@@ -3,21 +3,15 @@ pipeline {
     tools {
         maven 'maven' 
     }
-    }
     stages {
         stage('Checkout') {
             steps {
-                script {
-                    checkout scm
-                }
+                checkout scm
             }
         }
         stage('Build') {
             steps {
-                script {
-                     mvn clean package
-
-                }
+                sh 'mvn clean package'
             }
         }
     }
