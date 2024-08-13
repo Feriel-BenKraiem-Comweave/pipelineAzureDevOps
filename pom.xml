@@ -36,7 +36,9 @@
             <username>Feriel</username> 
             <password>Feriel123**</password> 
             <applicationName>${project.artifactId}</applicationName> 
-            <environment>Design</environment> 
+            <environment>Sandbox</environment> 
+            <workerType>${workerType}</workerType> 
+         	<workers>1</workers> 
             <objectStoreV2>true</objectStoreV2> 
         </cloudHubDeployment> 
     </configuration> 
