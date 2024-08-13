@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.mycompany</groupId>
-	<artifactId>project</artifactId>
+	<artifactId>projectcicd</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>mule-application</packaging>
 
@@ -32,12 +32,12 @@
     <configuration> 
         <cloudHubDeployment> 
             <uri>https://anypoint.mulesoft.com/</uri> 
-            <muleVersion>4.3.0</muleVersion> 
+            <muleVersion>${mule.version}</muleVersion> 
 			<username>Feriel</username>
 			<password>Feriel123**</password>
             <applicationName>${project.artifactId}</applicationName> 
             <environment>Sandbox</environment> 
-            <workerType>${workerType}</workerType> 
+            <workerType>0.1 vCores</workerType> 
          	<workers>1</workers> 
 			<properties>
 				<env>dev</env>
