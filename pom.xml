@@ -39,6 +39,9 @@
             <environment>Sandbox</environment> 
             <workerType>${workerType}</workerType> 
          	<workers>1</workers> 
+			<properties>
+				<env>dev</env>
+			</properties>
             <objectStoreV2>true</objectStoreV2> 
         </cloudHubDeployment> 
     </configuration> 
