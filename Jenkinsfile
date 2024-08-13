@@ -14,5 +14,13 @@ pipeline {
                 sh 'mvn clean package'
             }
         }
+        stage('Deploy CloudHubs') { 
+            environment { 
+                ANYPOINT_CREDENTIALS = credentials(' anypointplatformcredentials ') 
+            } 
+            steps { 
+                sh 'mvn clean deploy -DmuleDeploy  -Dusername=${ANYPOINT_CREDENTIALS_USR} -Dpassword=${ANYPOINT_CREDENTIALS_PSW}' 
+            }  
+       } 
     }
 }
