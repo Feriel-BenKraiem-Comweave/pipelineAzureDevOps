@@ -16,7 +16,7 @@ pipeline {
         }
         stage('Deploy CloudHubs') { 
             steps { 
-                sh 'mvn -X clean deploy -DmuleDeploy  -Dusername=998ddb532fcb48a3bd312ba779c3a64f -Dpassword=998ddb532fcb48a3bd312ba779c3a64f -DworkerType=Micro -Dworkers=1' 
+                sh 'mvn -X clean deploy -DmuleDeploy  -Dusername=998ddb532fcb48a3bd312ba779c3a64f -Dpassword=FCfA351a4405403Ca7C74dAE1F45a321 -DworkerType=Micro -Dworkers=1' 
             }  
        } 
     }
