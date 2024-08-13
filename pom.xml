@@ -32,7 +32,9 @@
     <configuration> 
         <cloudHubDeployment> 
             <uri>https://anypoint.mulesoft.com/</uri> 
-            <muleVersion>${app.runtime}</muleVersion> 
+            <muleVersion>4.3.0</muleVersion> 
+			<username>Feriel</username>
+			<password>Feriel123**</password>
             <applicationName>${project.artifactId}</applicationName> 
             <environment>Sandbox</environment> 
             <workerType>${workerType}</workerType> 
@@ -85,10 +87,4 @@
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
-    <distributionManagement>
-		<repository>
-			<id>exchange-repo</id>
-			<url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
-		</repository>
-	</distributionManagement>
 </project>
