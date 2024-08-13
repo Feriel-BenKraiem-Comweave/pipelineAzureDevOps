@@ -34,7 +34,7 @@
             <uri>https://anypoint.mulesoft.com/</uri> 
             <muleVersion>${app.runtime}</muleVersion> 
             <username>998ddb532fcb48a3bd312ba779c3a64f</username> 
-            <password>998ddb532fcb48a3bd312ba779c3a64f</password> 
+            <password>FCfA351a4405403Ca7C74dAE1F45a321</password> 
             <applicationName>${project.artifactId}</applicationName> 
             <environment>Sandbox</environment> 
             <workerType>${workerType}</workerType> 
