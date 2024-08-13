@@ -21,5 +21,6 @@ pipeline {
                     sh "mvn clean deploy -DmuleDeploy -Dusername=Feriel -Dpassword=${token} -DworkerType=Micro -Dworkers=1"
                 }
             }
+       }     
    }
 }
