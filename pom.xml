@@ -85,5 +85,10 @@
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
-
+    <distributionManagement>
+		<repository>
+			<id>exchange-repo</id>
+			<url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
+		</repository>
+	</distributionManagement>
 </project>
