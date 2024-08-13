@@ -16,7 +16,7 @@ pipeline {
         }
         stage('Deploy To CloudHub') {
             steps {
-                sh 'mvn deploy -Danypoint.clientId=998ddb532fcb48a3bd312ba779c3a64f -Danypoint.clientSecret=FCfA351a4405403Ca7C74dAE1F45a321'
+                sh 'mvn clean package deploy -DmuleDeploy -DskipTests -DaltDeploymentRepository=myinternalrepo::default::file:///C:/snapshots'
             }
         }
     }
