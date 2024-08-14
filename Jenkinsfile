@@ -1,47 +1,28 @@
 pipeline {
     agent any
     tools {
-        maven 'maven'
+        maven 'maven'  // Ensure the Maven tool is configured correctly in Jenkins
     }
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
+                checkout scm  // Checkout code from the SCM configured in the Jenkins job
             }
         }
         stage('Build') {
             steps {
-                sh 'mvn clean package'
+                sh 'mvn clean package'  // Run Maven to clean and package the code
             }
         }
-        stage('Deploy To CloudHub - Develop') {
-            when {
-                branch 'developer'
-            }
+        stage('Deploy To CloudHub') {
             steps {
-                sh 'mvn -X deploy -DmuleDeploy -DskipTests -Denvironment=Develop'
+                sh 'mvn -X deploy -DmuleDeploy -DskipTests'  // Deploy the code to CloudHub
             }
         }
-        stage('Deploy To CloudHub - Test') {
-            when {
-                branch 'staging'
-            }
-            steps {
-                sh 'mvn -X deploy -DmuleDeploy -DskipTests -Denvironment=Staging'
-            }
-        }
-        stage('Deploy To CloudHub - Production') {
-            when {
-                branch 'product'
-            }
-            steps {
-                sh 'mvn -X deploy -DmuleDeploy -DskipTests -Denvironment=Product'
-            }
-        }        
     }
     post {
         failure {
-            echo 'Build or deployment failed.'
+            echo 'Build or deployment failed.'  // Log a message if the build or deployment fails
         }
     }
 }
