@@ -27,8 +27,10 @@ pipeline {
                     // Determine the deployment environment based on the branch name
                     if (env.BRANCH_NAME == 'developer') {
                         deployEnv = 'Develop'
-                    } else if (env.BRANCH_NAME == 'test') {
-                        deployEnv = 'Test'
+                    } else if (env.BRANCH_NAME == 'staging') {
+                        deployEnv = 'Staging'
+                    } else if (env.BRANCH_NAME == 'product') {
+                        deployEnv = 'Product'
                     }
 
                     // Deploy only if a known environment is set
