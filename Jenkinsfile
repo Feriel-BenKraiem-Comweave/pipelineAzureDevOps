@@ -23,19 +23,23 @@ pipeline {
             steps {
                 script {
                     def deployEnv = 'Unknown'
+                    def branchName = sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
                     
-                    if (env.BRANCH_NAME == 'developer') {
+                    echo "Branch Name: ${branchName}"
+                    
+                    if (branchName == 'developer') {
                         deployEnv = 'Develop'
-                    } else if (env.BRANCH_NAME == 'staging') {
+                    } else if (branchName == 'staging') {
                         deployEnv = 'Staging'
-                    } else if (env.BRANCH_NAME == 'product') {
+                    } else if (branchName == 'product') {
                         deployEnv = 'Product'
                     }
 
+                    // Deploy only if a known environment is set
                     if (deployEnv != 'Unknown') {
                         sh "mvn -X deploy -DmuleDeploy -DskipTests -Denvironment=${deployEnv}"
                     } else {
-                        echo "Branch ${env.BRANCH_NAME} does not match any known environment."
+                        echo "Branch ${branchName} does not match any known environment."
                     }
                 }
             }
