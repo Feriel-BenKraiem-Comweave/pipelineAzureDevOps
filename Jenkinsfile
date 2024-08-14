@@ -19,7 +19,6 @@ pipeline {
                 }
             }
         }
-        //hh
         stage('Deploy To CloudHub') {
             steps {
                 script {
