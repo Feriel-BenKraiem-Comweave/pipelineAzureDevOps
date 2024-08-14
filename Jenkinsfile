@@ -9,40 +9,19 @@ pipeline {
                 checkout scm
             }
         }
-        
         stage('Build') {
             steps {
                 sh 'mvn clean package'
             }
         }
-        stage('Deploy To CloudHub - Develop') {
-            when {
-                branch 'developer'
-            }
+        stage('Deploy To CloudHub') {
             steps {
-                sh 'mvn -X deploy -DmuleDeploy -DskipTests -Denvironment=Develop'
+                sh 'mvn -X deploy -DmuleDeploy -DskipTests'
             }
         }
-        stage('Deploy To CloudHub - Test') {
-            when {
-                branch 'staging'
-            }
-            steps {
-                sh 'mvn -X deploy -DmuleDeploy -DskipTests -Denvironment=Staging'
-            }
-        }
-        stage('Deploy To CloudHub - Production') {
-            when {
-                branch 'product'
-            }
-            steps {
-                sh 'mvn -X deploy -DmuleDeploy -DskipTests -Denvironment=Product'
-            }
-        }        
     }
     post {
         failure {
             echo 'Build or deployment failed.'
         }
     }
-}
