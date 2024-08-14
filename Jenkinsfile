@@ -14,11 +14,30 @@ pipeline {
                 sh 'mvn clean package'
             }
         }
-        stage('Deploy To CloudHub') {
+        stage('Deploy To CloudHub - Develop') {
+            when {
+                branch 'developer'
+            }
             steps {
-                sh 'mvn -X deploy -DmuleDeploy -DskipTests'
+                sh 'mvn -X deploy -DmuleDeploy -DskipTests -Denvironment=Develop'
             }
         }
+        stage('Deploy To CloudHub - Test') {
+            when {
+                branch 'staging'
+            }
+            steps {
+                sh 'mvn -X deploy -DmuleDeploy -DskipTests -Denvironment=Staging'
+            }
+        }
+        stage('Deploy To CloudHub - Production') {
+            when {
+                branch 'product'
+            }
+            steps {
+                sh 'mvn -X deploy -DmuleDeploy -DskipTests -Denvironment=Product'
+            }
+        }        
     }
     post {
         failure {
