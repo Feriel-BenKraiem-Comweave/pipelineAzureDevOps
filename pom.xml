@@ -37,7 +37,7 @@
 			<password>Feriel123**</password>
             <applicationName>projectcicd</applicationName> 
 			<businessGroup>ITMMA</businessGroup>
-            <environment>${env}</environment> 
+            <environment>${environment}</environment> 
            
          	<workers>1</workers> 
 			
