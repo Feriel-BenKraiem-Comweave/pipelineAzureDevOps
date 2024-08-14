@@ -18,7 +18,7 @@ pipeline {
             steps {
                 // Dynamically inject the mule-maven-plugin configuration and deploy
                 sh '''
-                mvn org.apache.maven.plugins:maven-antrun-plugin:run \
+                mvn org.apache.maven.plugins:maven-antrun-plugin:run@deploy \
                 -DcloudHubUri=https://anypoint.mulesoft.com/ \
                 -DmuleVersion=4.7.0 \
                 -DcloudHubUsername=Feriel \
