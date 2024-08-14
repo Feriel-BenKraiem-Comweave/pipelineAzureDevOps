@@ -20,6 +20,30 @@ pipeline {
                 checkout scm
             }
         }
+        stage('Modify pom.xml') {
+            steps {
+                script {
+                    def pomFile = readFile('pom.xml')
+                    def newConfiguration = """
+                    <configuration>
+                        <cloudHubDeployment>
+                            <uri>${CLOUDHUB_URI}</uri>
+                            <muleVersion>${MULE_VERSION}</muleVersion>
+                            <username>${CLOUDHUB_USERNAME}</username>
+                            <password>${CLOUDHUB_PASSWORD}</password>
+                            <applicationName>${APPLICATION_NAME}</applicationName>
+                            <businessGroup>${BUSINESS_GROUP}</businessGroup>
+                            <environment>${ENVIRONMENT}</environment>
+                            <workers>${WORKERS}</workers>
+                            <objectStoreV2>${OBJECT_STORE_V2}</objectStoreV2>
+                        </cloudHubDeployment>
+                    </configuration>
+                    """
+                    def updatedPom = pomFile.replaceFirst(/(<build>[\s\S]*?<\/build>)/, "\$1${newConfiguration}")
+                    writeFile(file: 'pom.xml', text: updatedPom)
+                }
+            }
+        }
         stage('Build') {
             steps {
                 sh 'mvn clean package'
@@ -27,31 +51,7 @@ pipeline {
         }
         stage('Deploy To CloudHub') {
             steps {
-                sh '''
-                mvn org.mule.tools.maven:mule-maven-plugin:deploy \
-                -DmuleDeploy \
-                -DskipTests \
-                -Danypoint.platform.username=${CLOUDHUB_USERNAME} \
-                -Danypoint.platform.password=${CLOUDHUB_PASSWORD} \
-                -Dmule.version=${MULE_VERSION} \
-                -Dcloudhub.uri=${CLOUDHUB_URI} \
-                -Dapplication.name=${APPLICATION_NAME} \
-                -Dapplication.businessGroup=${BUSINESS_GROUP} \
-                -Dapplication.environment=${ENVIRONMENT} \
-                -Dapplication.workers=${WORKERS} \
-                -Dapplication.objectStoreV2=${OBJECT_STORE_V2} \
-                -DcloudHubDeployment="<cloudHubDeployment>\
-                    <uri>${CLOUDHUB_URI}</uri>\
-                    <muleVersion>${MULE_VERSION}</muleVersion>\
-                    <username>${CLOUDHUB_USERNAME}</username>\
-                    <password>${CLOUDHUB_PASSWORD}</password>\
-                    <applicationName>${APPLICATION_NAME}</applicationName>\
-                    <businessGroup>${BUSINESS_GROUP}</businessGroup>\
-                    <environment>${ENVIRONMENT}</environment>\
-                    <workers>${WORKERS}</workers>\
-                    <objectStoreV2>${OBJECT_STORE_V2}</objectStoreV2>\
-                </cloudHubDeployment>"
-                '''
+                sh 'mvn org.mule.tools:mule-maven-plugin:deploy -DmuleDeploy -DskipTests'
             }
         }
     }
