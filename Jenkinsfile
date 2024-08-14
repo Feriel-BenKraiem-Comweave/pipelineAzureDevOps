@@ -32,7 +32,6 @@ pipeline {
                         deployEnv = 'Product'
                     }
 
-                    // Deploy only if a known environment is set
                     if (deployEnv != 'Unknown') {
                         sh "mvn -X deploy -DmuleDeploy -DskipTests -Denvironment=${deployEnv}"
                     } else {
