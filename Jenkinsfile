@@ -39,7 +39,10 @@ pipeline {
                         </cloudHubDeployment>
                     </configuration>
                     """
-                    def updatedPom = pomFile.replaceFirst(/(<build>[\s\S]*?<\/build>)/, "\$1${newConfiguration}")
+                    def updatedPom = pomFile.replaceFirst(
+                        /(<plugin>[\s\S]*?<groupId>org\.mule\.tools\.maven<\/groupId>[\s\S]*?<\/plugin>)/, 
+                        "\$1${newConfiguration}"
+                    )
                     writeFile(file: 'pom.xml', text: updatedPom)
                 }
             }
