@@ -37,7 +37,7 @@
 			<password>Feriel123**</password>
             <applicationName>project_mule_cicd</applicationName> 
 			<businessGroup>ITMMA</businessGroup>
-            <environment>${environment}</environment> 
+            <environment>Staging</environment> 
            
          	<workers>1</workers> 
 			
