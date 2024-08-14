@@ -1,36 +1,42 @@
-node {
-    def deployEnv = 'Unknown'
-
-    // Checkout code
-    stage('Checkout') {
-        checkout scm
-    }
-
-    // Build the project
-    stage('Build') {
-        sh 'mvn clean package'
-    }
-
-    // Determine the environment and deploy
-    stage('Deploy To CloudHub') {
-        // Determine the deployment environment based on the branch name
-        if (env.BRANCH_NAME == 'developer') {
-            deployEnv = 'Develop'
-        } else if (env.BRANCH_NAME == 'staging') {
-            deployEnv = 'Staging'
-        } else if (env.BRANCH_NAME == 'product') {
-            deployEnv = 'Product'
+pipeline {
+    agent any
+    stages {
+        stage('Checkout') {
+            steps {
+                script {
+                    checkout scm
+                }
+            }
         }
+        stage('Build') {
+            steps {
+                script {
+                    sh 'mvn clean package'
+                }
+            }
+        }
+        stage('Deploy To CloudHub') {
+            steps {
+                script {
+                    def deployEnv = 'Unknown'
+                    
+                    // Determine the deployment environment based on the branch name
+                    if (env.BRANCH_NAME == 'developer') {
+                        deployEnv = 'Develop'
+                    } else if (env.BRANCH_NAME == 'test') {
+                        deployEnv = 'Test'
+                    }
 
-        // Deploy only if a known environment is set
-        if (deployEnv != 'Unknown') {
-            sh "mvn -X deploy -DmuleDeploy -DskipTests -Denvironment=${deployEnv}"
-        } else {
-            echo "Branch ${env.BRANCH_NAME} does not match any known environment."
+                    // Deploy only if a known environment is set
+                    if (deployEnv != 'Unknown') {
+                        sh "mvn -X deploy -DmuleDeploy -DskipTests -Denvironment=${deployEnv}"
+                    } else {
+                        echo "Branch ${env.BRANCH_NAME} does not match any known environment."
+                    }
+                }
+            }
         }
     }
-    
-    // Post-build actions
     post {
         failure {
             echo 'Build or deployment failed.'
