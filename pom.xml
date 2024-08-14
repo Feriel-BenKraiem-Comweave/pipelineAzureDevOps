@@ -33,8 +33,8 @@
         <cloudHubDeployment> 
             <uri>https://anypoint.mulesoft.com/</uri> 
             <muleVersion>4.7.0</muleVersion> 
-			<username>Feriel</username>
-			<password>Feriel123**</password>
+			<username>Raslen</username>
+			<password>Warghui110</password>
             <applicationName>projectcicd-product</applicationName> 
 			<businessGroup>ITMMA</businessGroup>
             <environment>Product</environment> 
