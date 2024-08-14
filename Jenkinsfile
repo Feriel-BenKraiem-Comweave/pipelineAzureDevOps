@@ -40,7 +40,7 @@ pipeline {
                     </configuration>
                     """
                     def updatedPom = pomFile.replaceFirst(
-                        /(<plugin>[\s\S]*?<groupId>org\.mule\.tools\.maven<\/groupId>[\s\S]*?<\/plugin>)/, 
+                        /(<plugin>[\s\S]*?<groupId>org\\.mule\\.tools\\.maven<\/groupId>[\s\S]*?<\/plugin>)/, 
                         "\$1${newConfiguration}"
                     )
                     writeFile(file: 'pom.xml', text: updatedPom)
