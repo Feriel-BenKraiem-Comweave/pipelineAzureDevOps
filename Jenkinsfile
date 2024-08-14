@@ -3,6 +3,17 @@ pipeline {
     tools {
         maven 'maven'
     }
+    environment {
+        CLOUDHUB_URI = 'https://anypoint.mulesoft.com/'
+        MULE_VERSION = '4.7.0'
+        CLOUDHUB_USERNAME = 'Feriel'
+        CLOUDHUB_PASSWORD = 'Feriel123**'
+        APPLICATION_NAME = 'projectcicd'
+        BUSINESS_GROUP = 'ITMMA'
+        ENVIRONMENT = 'Sandbox'
+        WORKERS = '1'
+        OBJECT_STORE_V2 = 'true'
+    }
     stages {
         stage('Checkout') {
             steps {
@@ -16,36 +27,37 @@ pipeline {
         }
         stage('Deploy To CloudHub') {
             steps {
-                // Dynamically inject the mule-maven-plugin configuration and deploy
                 sh '''
-                mvn org.apache.maven.plugins:maven-antrun-plugin:run@deploy \
-                -DcloudHubUri=https://anypoint.mulesoft.com/ \
-                -DmuleVersion=4.7.0 \
-                -DcloudHubUsername=Feriel \
-                -DcloudHubPassword=Feriel123** \
-                -DcloudHubAppName=projectcicd \
-                -DcloudHubBusinessGroup=ITMMA \
-                -DcloudHubEnvironment=Sandbox \
-                -DcloudHubWorkers=1 \
-                -DcloudHubObjectStoreV2=true \
-                -DcloudHubDeploymentConfig="\
-                <configuration>\
-                    <cloudHubDeployment>\
-                        <uri>${cloudHubUri}</uri>\
-                        <muleVersion>${muleVersion}</muleVersion>\
-                        <username>${cloudHubUsername}</username>\
-                        <password>${cloudHubPassword}</password>\
-                        <applicationName>${cloudHubAppName}</applicationName>\
-                        <businessGroup>${cloudHubBusinessGroup}</businessGroup>\
-                        <environment>${cloudHubEnvironment}</environment>\
-                        <workers>${cloudHubWorkers}</workers>\
-                        <objectStoreV2>${cloudHubObjectStoreV2}</objectStoreV2>\
-                    </cloudHubDeployment>\
-                </configuration>" \
-                -Dexec.executable="mvn" \
-                -Dexec.args="org.mule.tools.maven:mule-maven-plugin:deploy -DmuleDeploy -DskipTests -DcloudHubDeploymentConfig='${cloudHubDeploymentConfig}'"
+                mvn org.mule.tools.maven:mule-maven-plugin:deploy \
+                -DmuleDeploy \
+                -DskipTests \
+                -Danypoint.platform.username=${CLOUDHUB_USERNAME} \
+                -Danypoint.platform.password=${CLOUDHUB_PASSWORD} \
+                -Dmule.version=${MULE_VERSION} \
+                -Dcloudhub.uri=${CLOUDHUB_URI} \
+                -Dapplication.name=${APPLICATION_NAME} \
+                -Dapplication.businessGroup=${BUSINESS_GROUP} \
+                -Dapplication.environment=${ENVIRONMENT} \
+                -Dapplication.workers=${WORKERS} \
+                -Dapplication.objectStoreV2=${OBJECT_STORE_V2} \
+                -DcloudHubDeployment="<cloudHubDeployment>\
+                    <uri>${CLOUDHUB_URI}</uri>\
+                    <muleVersion>${MULE_VERSION}</muleVersion>\
+                    <username>${CLOUDHUB_USERNAME}</username>\
+                    <password>${CLOUDHUB_PASSWORD}</password>\
+                    <applicationName>${APPLICATION_NAME}</applicationName>\
+                    <businessGroup>${BUSINESS_GROUP}</businessGroup>\
+                    <environment>${ENVIRONMENT}</environment>\
+                    <workers>${WORKERS}</workers>\
+                    <objectStoreV2>${OBJECT_STORE_V2}</objectStoreV2>\
+                </cloudHubDeployment>"
                 '''
             }
+        }
+    }
+    post {
+        failure {
+            echo 'Build or deployment failed.'
         }
     }
 }
