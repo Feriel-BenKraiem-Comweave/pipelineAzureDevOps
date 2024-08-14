@@ -19,7 +19,6 @@ pipeline {
                 }
             }
         }
-       //staging
         stage('Deploy To CloudHub') {
             steps {
                 script {
