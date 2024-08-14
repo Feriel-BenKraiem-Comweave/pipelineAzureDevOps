@@ -23,8 +23,7 @@ pipeline {
             steps {
                 script {
                     def deployEnv = 'Unknown'
-                    def branchName = sh(script: 'git for-each-ref --sort=-committerdate --format='%(refname:short)' refs/heads/ | head -n 1', returnStdout: true).trim()
-                    
+                    def branchName = sh(script: "git for-each-ref --sort=-committerdate --format='%(refname:short)' refs/heads/ | head -n 1",returnStdout: true).trim()                    
                     echo "Branch Name: ${branchName}"
                     
                     if (branchName == 'developer') {
