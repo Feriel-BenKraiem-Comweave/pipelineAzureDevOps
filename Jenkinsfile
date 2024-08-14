@@ -1,52 +1,28 @@
 pipeline {
     agent any
     tools {
-        maven 'maven'
+        maven 'maven'  //the Maven tool is configured correctly in Jenkins
     }
     stages {
         stage('Checkout') {
             steps {
-                script {
-                    checkout scm
-                }
+                checkout scm  // Checkout code from the SCM configured in the Jenkins job
             }
         }
-        
         stage('Build') {
             steps {
-                script {
-                    sh 'mvn clean package'
-                }
+                sh 'mvn clean package'  // Run Maven to clean and package the code
             }
         }
         stage('Deploy To CloudHub') {
             steps {
-                script {
-                    def deployEnv = 'Unknown'
-                    def branchName = sh(script: "git for-each-ref --sort=-committerdate --format='%(refname:short)' refs/heads/ | head -n 1",returnStdout: true).trim()                    
-                    echo "Branch Name: ${branchName}"
-                    
-                    if (branchName == 'developer') {
-                        deployEnv = 'Develop'
-                    } else if (branchName == 'staging') {
-                        deployEnv = 'Staging'
-                    } else if (branchName == 'product') {
-                        deployEnv = 'Product'
-                    }
-
-                    // Deploy only if a known environment is set
-                    if (deployEnv != 'Unknown') {
-                        sh "mvn -X deploy -DmuleDeploy -DskipTests -Denvironment=${deployEnv}"
-                    } else {
-                        echo "Branch ${branchName} does not match any known environment."
-                    }
-                }
+                sh 'mvn -X deploy -DmuleDeploy -DskipTests'  // Deploy the code to CloudHub
             }
         }
     }
     post {
         failure {
-            echo 'Build or deployment failed.'
+            echo 'Build or deployment failed.'  // Log a message if the build or deployment fails
         }
     }
 }
