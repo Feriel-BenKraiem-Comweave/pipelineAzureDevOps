@@ -24,7 +24,6 @@ pipeline {
                 script {
                     def deployEnv = 'Unknown'
                     
-                    // Determine the deployment environment based on the branch name
                     if (env.BRANCH_NAME == 'developer') {
                         deployEnv = 'Develop'
                     } else if (env.BRANCH_NAME == 'staging') {
