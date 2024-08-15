@@ -33,7 +33,7 @@ pipelines:
             ./update-pom.sh
 
           # Configure Git remote
-          - git remote add dev https://raslenouarghi@bitbucket.org/cicd_with_mulesoft/mulesoft_cicd.git
+          - git remote add dev https://raslenouarghi:ATBBHy6nJCwjUEDvc7BndSPJuDJn6E46BCE0@bitbucket.org/cicd_with_mulesoft/mulesoft_cicd.git
           
           # Add changes, commit, and push
           - git add pom.xml
