@@ -33,12 +33,12 @@ pipelines:
             ./update-pom.sh
 
           # Configure Git remote
-          - git remote add origin https://raslenouarghi@bitbucket.org/cicd_with_mulesoft/mulesoft_cicd.git
+          - git remote add dev https://raslenouarghi@bitbucket.org/cicd_with_mulesoft/mulesoft_cicd.git
           
           # Add changes, commit, and push
           - git add pom.xml
           - git commit -m "Update pom.xml with cloudHubDeployment configuration"
-          - git push origin developer
+          - git push dev developer
 
     - step:
         name: Build
