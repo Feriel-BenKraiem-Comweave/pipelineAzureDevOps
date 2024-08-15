@@ -9,7 +9,7 @@ pipelines:
           - git config --global user.name "raslen ouarghi"
 
           - |
-            # Create the update-pom.sh file
+            # Create the update-pom.sh 
             touch update-pom.sh
 
             # Append the shebang to the script
