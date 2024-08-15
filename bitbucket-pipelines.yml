@@ -5,24 +5,33 @@ pipelines:
     - step:
         name: Create Update Script
         script:
-          # Create the update-pom.sh script
+          # Create the update-pom.sh file
+          - touch update-pom.sh
+
+          # Append the shebang to the script
           - echo '#!/bin/bash' > update-pom.sh
-          - echo 'CONFIGURATION="<configuration>\n <cloudHubDeployment>\n <uri>https://anypoint.mulesoft.com/</uri>\n <muleVersion>4.7.0</muleVersion>\n <username>Feriel</username>\n <password>Feriel123**</password>\n <applicationName>projectcicd</applicationName>\n <businessGroup>ITMMA</businessGroup>\n <environment>Develop</environment>\n <workers>1</workers>\n <objectStoreV2>true</objectStoreV2>\n </cloudHubDeployment>\n</configuration>"' >> update-pom.sh
+
+          # Append the configuration and script logic
+          - echo 'CONFIGURATION="<configuration>\n<cloudHubDeployment>\n<uri>https://anypoint.mulesoft.com/</uri>\n<muleVersion>4.7.0</muleVersion>\n<username>Feriel</username>\n<password>Feriel123**</password>\n<applicationName>projectcicd</applicationName>\n<businessGroup>ITMMA</businessGroup>\n<environment>Develop</environment>\n<workers>1</workers>\n<objectStoreV2>true</objectStoreV2>\n</cloudHubDeployment>\n</configuration>"' >> update-pom.sh
           - echo 'POM_FILE="pom.xml"' >> update-pom.sh
           - echo 'sed -i "/<\/plugin>/i $CONFIGURATION" $POM_FILE' >> update-pom.sh
-          - chmod +x update-pom.sh  # Make the script executable
 
-    - step:
-        name: Verify Script
-        script:
-          # List files and check contents to ensure script creation
+          # Make the script executable
+          - chmod +x update-pom.sh
+
+          # Verify the script creation
           - ls -la
           - cat update-pom.sh
 
     - step:
         name: Update pom.xml
         script:
-          - ./update-pom.sh  # Run the script to modify pom.xml
+          # Verify script presence and content
+          - ls -la
+          - cat update-pom.sh
+          
+          # Run the script to modify pom.xml
+          - ./update-pom.sh
 
     - step:
         name: Build
