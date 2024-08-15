@@ -1,3 +1,6 @@
+18:44
+فر
+فر يال
 image: maven:3.8.4-jdk-11  # Docker image to use for the build environment
 
 pipelines:
@@ -5,6 +8,10 @@ pipelines:
     - step:
         name: Create and Run Update Script
         script:
+          # Configure Git with your username and email
+          - git config --global user.email "Raslen.ouarghi@ensi-uma.tn"
+          - git config --global user.name "raslen ouarghi"
+          
           # Create the update-pom.sh file, append content, make it executable, and run it
           - |
             # Create the update-pom.sh file
@@ -27,6 +34,13 @@ pipelines:
             
             # Run the script to modify pom.xml
             ./update-pom.sh
+
+          # Configure Git remote
+            git remote add origin https://raslenouarghi@bitbucket.org/cicd_with_mulesoft/mulesoft_cicd.git &&
+            # Add changes, commit, and push
+            git add pom.xml &&
+            git commit -m "Update pom.xml with cloudHubDeployment configuration" &&
+            git push origin developer
 
     - step:
         name: Build
