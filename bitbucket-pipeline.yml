@@ -4,7 +4,7 @@ jobs:
     docker:
       - image: maven:3.8.4-jdk-11
     steps:
-      - checkout: scm  # Checkout code from SCM
+      - checkout: scm
       - run:
           name: Build
           command: mvn clean package  # Run Maven to clean and package the code
