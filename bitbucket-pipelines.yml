@@ -8,36 +8,37 @@ pipelines:
           # Configure Git with your username and email
           - git config --global user.email "Raslen.ouarghi@ensi-uma.tn"
           - git config --global user.name "raslen ouarghi"
-          
+
           # Create the update-pom.sh file, append content, make it executable, and run it
           - |
             # Create the update-pom.sh file
-            touch update-pom.sh && 
-            
+            touch update-pom.sh
+
             # Append the shebang to the script
-            echo '#!/bin/bash' > update-pom.sh &&
-            
+            echo '#!/bin/bash' > update-pom.sh
+
             # Append the configuration and script logic
-            echo 'CONFIGURATION="<configuration>\n<cloudHubDeployment>\n<uri>https://anypoint.mulesoft.com/</uri>\n<muleVersion>4.7.0</muleVersion>\n<username>Feriel</username>\n<password>Feriel123**</password>\n<applicationName>projectcicd</applicationName>\n<businessGroup>ITMMA</businessGroup>\n<environment>Develop</environment>\n<workers>1</workers>\n<objectStoreV2>true</objectStoreV2>\n</cloudHubDeployment>\n</configuration>"' >> update-pom.sh &&
-            echo 'POM_FILE="pom.xml"' >> update-pom.sh &&
-            echo 'sed -i "/<\/plugin>/i $CONFIGURATION" $POM_FILE' >> update-pom.sh &&
-            
+            echo 'CONFIGURATION="<configuration>\n<cloudHubDeployment>\n<uri>https://anypoint.mulesoft.com/</uri>\n<muleVersion>4.7.0</muleVersion>\n<username>Feriel</username>\n<password>Feriel123**</password>\n<applicationName>projectcicd</applicationName>\n<businessGroup>ITMMA</businessGroup>\n<environment>Develop</environment>\n<workers>1</workers>\n<objectStoreV2>true</objectStoreV2>\n</cloudHubDeployment>\n</configuration>"' >> update-pom.sh
+            echo 'POM_FILE="pom.xml"' >> update-pom.sh
+            echo 'sed -i "/<\/plugin>/i $CONFIGURATION" $POM_FILE' >> update-pom.sh
+
             # Make the script executable
-            chmod +x update-pom.sh &&
-            
+            chmod +x update-pom.sh
+
             # Verify the script creation
-            ls -la &&
-            cat update-pom.sh &&
-            
+            ls -la
+            cat update-pom.sh
+
             # Run the script to modify pom.xml
             ./update-pom.sh
 
           # Configure Git remote
-            git remote add origin https://raslenouarghi@bitbucket.org/cicd_with_mulesoft/mulesoft_cicd.git &&
-            # Add changes, commit, and push
-            git add pom.xml &&
-            git commit -m "Update pom.xml with cloudHubDeployment configuration" &&
-            git push origin developer
+          - git remote add origin https://raslenouarghi@bitbucket.org/cicd_with_mulesoft/mulesoft_cicd.git
+          
+          # Add changes, commit, and push
+          - git add pom.xml
+          - git commit -m "Update pom.xml with cloudHubDeployment configuration"
+          - git push origin developer
 
     - step:
         name: Build
