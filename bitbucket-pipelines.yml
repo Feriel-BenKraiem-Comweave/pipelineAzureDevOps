@@ -5,7 +5,6 @@ pipelines:
     - step:
         name: Create and Run Update Script
         script:
-          # Configure Git with your username and email
           - git config --global user.email "Raslen.ouarghi@ensi-uma.tn"
           - git config --global user.name "raslen ouarghi"
 
