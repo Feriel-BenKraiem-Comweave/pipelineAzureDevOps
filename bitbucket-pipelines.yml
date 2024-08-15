@@ -38,7 +38,7 @@ pipelines:
     - step:
         name: Deploy to CloudHub
         script:
-          - mvn -X deploy -DmuleDeploy -DskipTests  # Deploy the code to CloudHub
+          - mvn deploy -DmuleDeploy -DskipTests  # Deploy the code to CloudHub
 
     - step:
         name: Failure Message
