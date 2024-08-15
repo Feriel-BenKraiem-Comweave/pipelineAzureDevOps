@@ -12,7 +12,17 @@ pipelines:
     - step:
         name: Deploy to CloudHub
         script:
-          - mvn -X deploy -DmuleDeploy -DskipTests  # Deploy the code to CloudHub
+          - mvn -X deploy -DmuleDeploy -DskipTests \
+              -Dmule.maven.plugin.version=4.7.0 \
+              -Dcloudhub.uri=https://anypoint.mulesoft.com/ \
+              -Dcloudhub.muleVersion=4.7.0 \
+              -Dcloudhub.username=Feriel \
+              -Dcloudhub.password=Feriel123** \
+              -Dcloudhub.applicationName=projectcicd \
+              -Dcloudhub.businessGroup=ITMMA \
+              -Dcloudhub.environment=Develop \
+              -Dcloudhub.workers=1 \
+              -Dcloudhub.objectStoreV2=true
 
     - step:
         name: Failure Message
