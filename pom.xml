@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.mycompany</groupId>
-	<artifactId>projectcicd</artifactId>
+	<artifactId>projectcicd-product</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>mule-application</packaging>
 
-	<name>projectcicd</name>
+	<name>projectcicd-product</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -28,6 +28,8 @@
     <groupId>org.mule.tools.maven</groupId>
     <artifactId>mule-maven-plugin</artifactId>
     <version>${mule.maven.plugin.version}</version>
+    <extensions>true</extensions>
+    
 </plugin>
 		</plugins>
 	</build>
