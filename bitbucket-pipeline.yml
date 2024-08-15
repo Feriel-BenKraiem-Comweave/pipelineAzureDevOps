@@ -1,0 +1,17 @@
+version: '2.0'
+jobs:
+  build:
+    docker:
+      - image: maven:3.8.4-jdk-11
+    steps:
+      - checkout: scm  # Checkout code from SCM
+      - run:
+          name: Build
+          command: mvn clean package  # Run Maven to clean and package the code
+      - run:
+          name: Deploy to CloudHub
+          command: mvn -X deploy -DmuleDeploy -DskipTests  # Deploy the code to CloudHub
+    on_failure:
+      - run:
+          name: Failure Message
+          command: echo 'Build or deployment failed.'  # Log a message if the build or deployment fails
