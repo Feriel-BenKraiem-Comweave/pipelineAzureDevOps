@@ -5,13 +5,12 @@ pipelines:
     - step:
         name: Create and Run Update Script
         script:
-          - git config --global user.email "raslenouarghi2018@gmail.com"
-          - git config --global user.name "raslen ouarghi"
-          # Configure Git remote
-          - git remote add dev https://raslenouarghi2018:ATBBY9M9rsJJWGcfSJywrLPxAbsw8F5564A7@bitbucket.org/devops_project/mulesoft_cicd.git          
-
+          - source config.env
+          - git config --global user.email ${BITBUCKET_EMAIL}
+          - git config --global user.name ${BITBUCKET_USERNAME}
+          
+          - git remote add dev https://Feriel_Ben_Kraiem:${BITBUCKET_TOKEN}@bitbucket.org/bitbucket-ttraining/mulesoft_cicd.git
           - |
-            # Create the update-pom.sh 
             touch update-pom.sh
 
             # Append the shebang to the script
@@ -20,7 +19,7 @@ pipelines:
             # Add the logic to check if the plugin configuration exists and add it if not
             echo 'PLUGIN_EXISTS=$(grep -c "<groupId>org.mule.tools.maven</groupId>" pom.xml)' >> update-pom.sh
             echo 'if [ "$PLUGIN_EXISTS" -eq 0 ]; then' >> update-pom.sh
-            echo '  CONFIGURATION="<plugin>\n<groupId>org.mule.tools.maven</groupId>\n<artifactId>mule-maven-plugin</artifactId>\n<version>\${mule.maven.plugin.version}</version>\n<extensions>true</extensions>\n<configuration>\n<cloudHubDeployment>\n<uri>https://anypoint.mulesoft.com/</uri>\n<muleVersion>4.7.0</muleVersion>\n<username>Raslen</username>\n<password>Warghui110</password>\n<applicationName>cicd-test</applicationName>\n<businessGroup>ITMMA</businessGroup>\n<environment>Staging</environment>\n<workers>1</workers>\n<objectStoreV2>true</objectStoreV2>\n</cloudHubDeployment>\n</configuration>\n</plugin>"' >> update-pom.sh
+            echo '  CONFIGURATION="<plugin>\n<groupId>org.mule.tools.maven</groupId>\n<artifactId>mule-maven-plugin</artifactId>\n<version>\${mule.maven.plugin.version}</version>\n<extensions>true</extensions>\n<configuration>\n<cloudHubDeployment>\n<uri>https://anypoint.mulesoft.com/</uri>\n<muleVersion>4.7.0</muleVersion>\n<username>${ANYPOINT_USERNAME}</username>\n<password>${ANYPOINT_PASSWORD}</password>\n<applicationName>staging</applicationName>\n<businessGroup>${BUSINESS_GROUP}</businessGroup>\n<environment>Staging</environment>\n<workers>1</workers>\n<objectStoreV2>true</objectStoreV2>\n</cloudHubDeployment>\n</configuration>\n</plugin>"' >> update-pom.sh
             echo '  sed -i "/<\/plugins>/i $CONFIGURATION" pom.xml' >> update-pom.sh
 
             # Git commands are only executed if the plugin is added
