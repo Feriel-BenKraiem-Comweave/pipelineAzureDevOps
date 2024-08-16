@@ -3,7 +3,7 @@ image: maven:3.8.4-jdk-11
 pipelines:
   default:
     - step:
-        name: Create and Run Update Script
+        name: Create and Execute the Script which update the POM
         script:
           - source config.env
           - git config --global user.email ${BITBUCKET_EMAIL}
