@@ -20,7 +20,7 @@ pipelines:
             # Add the logic to check if the plugin configuration exists and add it if not
             echo 'PLUGIN_EXISTS=$(grep -c "<groupId>org.mule.tools.maven</groupId>" pom.xml)' >> update-pom.sh
             echo 'if [ "$PLUGIN_EXISTS" -eq 0 ]; then' >> update-pom.sh
-            echo '  CONFIGURATION="<plugin>\n<groupId>org.mule.tools.maven</groupId>\n<artifactId>mule-maven-plugin</artifactId>\n<version>\${mule.maven.plugin.version}</version>\n<extensions>true</extensions>\n<configuration>\n<cloudHubDeployment>\n<uri>https://anypoint.mulesoft.com/</uri>\n<muleVersion>4.7.0</muleVersion>\n<username>Raslen</username>\n<password>Warghui110</password>\n<applicationName>cicdtest-develop</applicationName>\n<businessGroup>ITMMA</businessGroup>\n<environment>Develop</environment>\n<workers>1</workers>\n<objectStoreV2>true</objectStoreV2>\n</cloudHubDeployment>\n</configuration>\n</plugin>"' >> update-pom.sh
+            echo '  CONFIGURATION="<plugin>\n<groupId>org.mule.tools.maven</groupId>\n<artifactId>mule-maven-plugin</artifactId>\n<version>\${mule.maven.plugin.version}</version>\n<extensions>true</extensions>\n<configuration>\n<cloudHubDeployment>\n<uri>https://anypoint.mulesoft.com/</uri>\n<muleVersion>4.7.0</muleVersion>\n<username>Raslen</username>\n<password>Warghui110</password>\n<applicationName>develop</applicationName>\n<businessGroup>ITMMA</businessGroup>\n<environment>Develop</environment>\n<workers>1</workers>\n<objectStoreV2>true</objectStoreV2>\n</cloudHubDeployment>\n</configuration>\n</plugin>"' >> update-pom.sh
             echo '  sed -i "/<\/plugins>/i $CONFIGURATION" pom.xml' >> update-pom.sh
 
             # Git commands are only executed if the plugin is added
