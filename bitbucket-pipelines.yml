@@ -13,7 +13,6 @@ pipelines:
           - |
             touch update-pom.sh
 
-            # Append the shebang to the script
             echo '#!/bin/bash' > update-pom.sh
 
             # Add the logic to check if the plugin configuration exists and add it if not
@@ -46,12 +45,12 @@ pipelines:
         caches:
           - maven
         script:
-          - mvn clean package  # Run Maven to clean and package the code
+          - mvn clean package  
 
     - step:
         name: Deploy to CloudHub
         script:
-          - mvn deploy -DmuleDeploy -DskipTests  # Deploy the code to CloudHub
+          - mvn deploy -DmuleDeploy -DskipTests  
 
     - step:
         name: Failure Message
