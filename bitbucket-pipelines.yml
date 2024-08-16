@@ -12,30 +12,24 @@ pipelines:
           - |
             touch update-pom.sh
 
-            # Append the shebang to the script
             echo '#!/bin/bash' > update-pom.sh
 
-            # Add the logic to check if the plugin configuration exists and add it if not
             echo 'PLUGIN_EXISTS=$(grep -c "<groupId>org.mule.tools.maven</groupId>" pom.xml)' >> update-pom.sh
             echo 'if [ "$PLUGIN_EXISTS" -eq 0 ]; then' >> update-pom.sh
             echo '  CONFIGURATION="<plugin>\n<groupId>org.mule.tools.maven</groupId>\n<artifactId>mule-maven-plugin</artifactId>\n<version>\${mule.maven.plugin.version}</version>\n<extensions>true</extensions>\n<configuration>\n<cloudHubDeployment>\n<uri>https://anypoint.mulesoft.com/</uri>\n<muleVersion>4.7.0</muleVersion>\n<username>${ANYPOINT_USERNAME}</username>\n<password>${ANYPOINT_PASSWORD}</password>\n<applicationName>staging</applicationName>\n<businessGroup>${BUSINESS_GROUP}</businessGroup>\n<environment>Staging</environment>\n<workers>1</workers>\n<objectStoreV2>true</objectStoreV2>\n</cloudHubDeployment>\n</configuration>\n</plugin>"' >> update-pom.sh
             echo '  sed -i "/<\/plugins>/i $CONFIGURATION" pom.xml' >> update-pom.sh
 
-            # Git commands are only executed if the plugin is added
             echo '  git add pom.xml' >> update-pom.sh
             echo '  git commit -m "Update pom.xml with cloudHubDeployment configuration"' >> update-pom.sh
             echo '  git push dev staging' >> update-pom.sh
 
             echo 'fi' >> update-pom.sh
 
-            # Make the script executable
             chmod +x update-pom.sh
 
-            # Verify the script creation
             ls -la
             cat update-pom.sh
 
-            # Run the script to modify pom.xml
             ./update-pom.sh
 
 
@@ -44,12 +38,12 @@ pipelines:
         caches:
           - maven
         script:
-          - mvn clean package  # Run Maven to clean and package the code
+          - mvn clean package 
 
     - step:
         name: Deploy to CloudHub
         script:
-          - mvn deploy -DmuleDeploy -DskipTests  # Deploy the code to CloudHub
+          - mvn deploy -DmuleDeploy -DskipTests
 
     - step:
         name: Failure Message
