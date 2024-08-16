@@ -1,4 +1,4 @@
-image: maven:3.8.4-jdk-11  # Docker image to use for the build environment
+image: maven:3.8.4-jdk-11  
 
 pipelines:
   default:
