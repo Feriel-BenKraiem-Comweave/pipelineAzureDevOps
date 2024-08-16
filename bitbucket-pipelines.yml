@@ -12,7 +12,6 @@ pipelines:
           - git remote add dev https://raslenouarghi2018:${BITBUCKET_TOKEN}@bitbucket.org/devops_project/mulesoft_cicd.git
 
           - |
-            # Create the update-pom.sh 
             touch update-pom.sh
 
             # Append the shebang to the script
