@@ -9,8 +9,7 @@ pipelines:
           - git config --global user.email "raslenouarghi2018@gmail.com"
           - git config --global user.name "raslen ouarghi"
           
-          - git remote add dev https://raslenouarghi2018:${BITBUCKET_TOKEN}@bitbucket.org/devops_project/mulesoft_cicd.git
-
+          - git remote add dev https://Feriel_Ben_Kraiem:${BITBUCKET_TOKEN}@bitbucket.org/bitbucket-ttraining/mulesoft_cicd.git
           - |
             touch update-pom.sh
 
