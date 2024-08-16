@@ -6,8 +6,8 @@ pipelines:
         name: Create and Run Update Script
         script:
           - source config.env
-          - git config --global user.email "raslenouarghi2018@gmail.com"
-          - git config --global user.name "raslen ouarghi"
+          - git config --global user.email ${BITBUCKET_EMAIL}
+          - git config --global user.name ${BITBUCKET_USERNAME}
           
           - git remote add dev https://Feriel_Ben_Kraiem:${BITBUCKET_TOKEN}@bitbucket.org/bitbucket-ttraining/mulesoft_cicd.git
           - |
