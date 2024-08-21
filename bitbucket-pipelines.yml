@@ -22,7 +22,7 @@ pipelines:
 
             echo '  git add pom.xml' >> update-pom.sh
             echo '  git commit -m "Update pom.xml with cloudHubDeployment configuration"' >> update-pom.sh
-            echo '  git push dev product' >> update-pom.sh
+            echo '  git push dev main' >> update-pom.sh
 
             echo 'fi' >> update-pom.sh
 
