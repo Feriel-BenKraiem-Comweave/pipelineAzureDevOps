@@ -1,0 +1,38 @@
+image: maven:3.8.4-jdk-11  
+
+pipelines:
+  default:
+    - step:
+        
+        name: Create and Execute the Script which updates the POM
+        script:
+          - source config.env
+          - git config --global user.email ${BITBUCKET_EMAIL}
+          - git remote add dev https://ferielbenkraiem2:${BITBUCKET_TOKEN}@bitbucket.org/on-premises-dev-test-prod/on_premises_dev_test_prod.git
+          - |
+            touch update-pom.sh
+            echo '#!/bin/bash' > update-pom.sh
+            echo 'source config.env' >> update-pom.sh
+            echo 'PLUGIN_EXISTS=$(grep -c "<groupId>org.mule.tools.maven</groupId>" pom.xml)' >> update-pom.sh
+            echo 'if [ "$PLUGIN_EXISTS" -eq 0 ]; then' >> update-pom.sh
+            echo '  CONFIGURATION="<plugin>\n<groupId>org.mule.tools.maven</groupId>\n<artifactId>mule-maven-plugin</artifactId>\n<version>\${mule.maven.plugin.version}</version>\n<extensions>true</extensions>\n<configuration>\n<armDeployment>\n<uri>https://anypoint.mulesoft.com/</uri>\n<target>on-premises-${BITBUCKET_BRANCH}</target>\n<targetType>server</targetType>\n<username>${ANYPOINT_USERNAME}</username>\n<password>${ANYPOINT_PASSWORD}</password>\n<environment>${BITBUCKET_BRANCH}</environment>\n<muleVersion>4.7.0</muleVersion>\n<properties>\n<key>value</key>\n</properties>\n</armDeployment>\n</configuration>\n</plugin>"' >> update-pom.sh
+            echo '  sed -i "/<\/plugins>/i $CONFIGURATION" pom.xml' >> update-pom.sh
+            echo '  git add pom.xml' >> update-pom.sh
+            echo '  git commit -m "Update pom.xml with standaloneDeployment configuration"' >> update-pom.sh
+            echo '  git push dev ${BITBUCKET_BRANCH}' >> update-pom.sh
+            echo 'fi' >> update-pom.sh
+            chmod +x update-pom.sh
+            ./update-pom.sh
+            cat pom.xml
+
+    - step:
+        name: Build
+        caches:
+          - maven
+        script:
+          - mvn clean package  
+          
+    - step:
+        name: Deploy to On-Premises
+        script:
+          - mvn deploy -DmuleDeploy -DskipTests
