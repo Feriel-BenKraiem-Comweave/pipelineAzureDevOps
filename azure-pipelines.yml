@@ -1,0 +1,62 @@
+trigger:
+  branches:
+    include:
+      - '*' 
+  paths:
+    include:
+      - pom.xml  
+
+variables:
+  -group: environment_variables 
+  MAVEN_VERSION: '3.8.4'
+  AZURE_BRANCH: $(Build.SourceBranchName)
+
+pool:
+  name: Default
+
+steps:
+
+  - script: |
+      git config --global user.email $(AZURE_DEVOPS_EMAIL)
+      git remote add mulesoftcicd https://ferielbenkraiem:$(AZURE_TOKEN)@dev.azure.com/ferielbenkraiem/Mulesoft_CloudHub/_git/cloudhub_azure
+    displayName: 'Setup Git Credentials'
+
+  - task: Bash@3
+    inputs:
+      targetType: 'inline'
+      script: |
+        echo "Creating update-pom.sh script"
+        touch update-pom.sh
+        echo '#!/bin/bash' > update-pom.sh
+        echo 'ANYPOINT_USERNAME="${ANYPOINT_USERNAME}"' >> update-pom.sh
+        echo 'ANYPOINT_PASSWORD="${ANYPOINT_PASSWORD}"' >> update-pom.sh
+        echo 'BUSINESS_GROUP="${BUSINESS_GROUP}"' >> update-pom.sh
+        echo 'PLUGIN_EXISTS=$(grep -c "<groupId>org.mule.tools.maven</groupId>" pom.xml)' >> update-pom.sh
+        echo 'if [ "$PLUGIN_EXISTS" -eq 0 ]; then' >> update-pom.sh
+        echo '  if [ "${AZURE_BRANCH}" == "main" ] || [ "${AZURE_BRANCH}" == "master" ]; then' >> update-pom.sh
+        echo '    CONFIGURATION="<plugin>\n<groupId>org.mule.tools.maven</groupId>\n<artifactId>mule-maven-plugin</artifactId>\n<version>\${mule.maven.plugin.version}</version>\n<extensions>true</extensions>\n<configuration>\n<cloudHubDeployment>\n<uri>https://anypoint.mulesoft.com/</uri>\n<muleVersion>4.7.0</muleVersion>\n<username>${ANYPOINT_USERNAME}</username>\n<password>${ANYPOINT_PASSWORD}</password>\n<applicationName>product</applicationName>\n<businessGroup>${BUSINESS_GROUP}</businessGroup>\n<environment>product</environment>\n<workers>1</workers>\n<objectStoreV2>true</objectStoreV2>\n</cloudHubDeployment>\n</configuration>\n</plugin>"' >> update-pom.sh
+        echo '  else' >> update-pom.sh
+        echo '    CONFIGURATION="<plugin>\n<groupId>org.mule.tools.maven</groupId>\n<artifactId>mule-maven-plugin</artifactId>\n<version>\${mule.maven.plugin.version}</version>\n<extensions>true</extensions>\n<configuration>\n<cloudHubDeployment>\n<uri>https://anypoint.mulesoft.com/</uri>\n<muleVersion>4.7.0</muleVersion>\n<username>${ANYPOINT_USERNAME}</username>\n<password>${ANYPOINT_PASSWORD}</password>\n<applicationName>${AZURE_BRANCH}</applicationName>\n<businessGroup>${BUSINESS_GROUP}</businessGroup>\n<environment>${AZURE_BRANCH}</environment>\n<workers>1</workers>\n<objectStoreV2>true</objectStoreV2>\n</cloudHubDeployment>\n</configuration>\n</plugin>"' >> update-pom.sh
+        echo '  fi' >> update-pom.sh
+        echo '  sed -i "/<\/plugins>/i $CONFIGURATION" pom.xml' >> update-pom.sh
+        echo '  git add pom.xml' >> update-pom.sh
+        echo '  git commit -m "Update pom.xml with cloudHubDeployment configuration"' >> update-pom.sh
+        echo '  git push mulesoftcicd ${AZURE_BRANCH}' >> update-pom.sh
+        echo 'fi' >> update-pom.sh
+        chmod +x update-pom.sh
+        ./update-pom.sh
+    displayName: 'Update POM file with Bash@3'
+
+  - task: Maven@3
+    inputs:
+      mavenPomFile: 'pom.xml'
+      options: '--batch-mode'
+      goals: 'package'
+    displayName: 'Build Package'
+
+  - task: Maven@3
+    inputs:
+      mavenPomFile: 'pom.xml'
+      options: '--batch-mode -DmuleDeploy -DskipTests'
+      goals: 'deploy'
+    displayName: 'Deploy to CloudHub' 
